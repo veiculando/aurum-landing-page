@@ -1,0 +1,13 @@
+export const WINE       = '#8a0009';
+export const WINE_DARK  = '#4a0005';
+export const WINE_MID   = '#c2302c';
+export const GOLD       = '#d9b442';
+export const GOLD_LIGHT = '#f1cf78';
+export const GOLD_GRAD  = 'linear-gradient(90deg,#d6b23a 0%,#debb4d 35%,#eecc72 70%,#f1cf78 100%)';
+export const PAPER      = '#F9F7F2';
+export const WHITE      = '#ffffff';
+export const CHARCOAL   = '#1A1A1B';
+export const ON_SURFACE = '#544341';
+export const RADIUS     = '18px';
+export const SHADOW     = '0 8px 32px rgba(74,14,14,0.10)';
+export const SHADOW_HV  = '0 16px 48px rgba(74,14,14,0.18)';
