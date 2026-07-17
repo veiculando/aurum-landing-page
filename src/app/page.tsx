@@ -6,6 +6,8 @@ import { Coverage } from "@/components/aurum/Coverage";
 import { Partners } from "@/components/aurum/Partners";
 import { Testimonials } from "@/components/aurum/Testimonials";
 import { About } from "@/components/aurum/About";
+import { History } from "@/components/aurum/History";
+import { ValuesAndTeam } from "@/components/aurum/ValuesAndTeam";
 import { CtaSection } from "@/components/aurum/CtaSection";
 
 export default function Home() {
@@ -20,6 +22,8 @@ export default function Home() {
         <Partners />
         <Testimonials />
         <About />
+        <History />
+        <ValuesAndTeam />
         <CtaSection />
       </div>
     </div>
