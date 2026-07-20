@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
 const NAV = [
-  { label: 'Início',    href: '#inicio' },
-  { label: 'Catálogo',  href: '#catalogo' },
-  { label: 'Sobre',     href: '#sobre' },
-  { label: 'Contato',   href: '#contato' },
+  { label: 'Início', href: '#inicio' },
+  { label: 'Catálogo', href: '#catalogo' },
+  { label: 'Sobre', href: '#sobre' },
+  { label: 'Contato', href: '#contato' },
 ];
 
 export function Header() {
@@ -59,11 +59,10 @@ export function Header() {
               <a
                 key={label}
                 href={href}
-                className={`font-inter text-sm transition-colors duration-200 px-4 py-2 relative border-b-2 pb-1.5 ${
-                  isActive
+                className={`font-inter text-sm transition-colors duration-200 px-4 py-2 relative border-b-2 pb-1.5 ${isActive
                     ? 'font-semibold border-gold text-gold'
                     : 'font-medium border-transparent text-paper/78 hover:text-gold-light'
-                }`}
+                  }`}
               >
                 {label}
               </a>
