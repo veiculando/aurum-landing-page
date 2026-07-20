@@ -5,11 +5,10 @@ import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
 const NAV = [
-  { label: 'Formatos',    href: '#formatos' },
-  { label: 'Cobertura',   href: '#cobertura' },
-  { label: 'Clientes',    href: '#clientes' },
-  { label: 'Depoimentos', href: '#depoimentos' },
-  { label: 'Sobre',       href: '#sobre' },
+  { label: 'Início', href: '#inicio' },
+  { label: 'Catálogo', href: '#catalogo' },
+  { label: 'Sobre', href: '#sobre' },
+  { label: 'Contato', href: '#contato' },
 ];
 
 export function Header() {
@@ -38,7 +37,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#5e0f1a] border-b border-gold/10 shadow-[0_4px_32px_rgba(0,0,0,0.35)]">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-wine border-b border-gold/10 shadow-[0_4px_32px_rgba(0,0,0,0.35)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between h-[76px] gap-4">
         {/* Logo */}
         <a href="#" className="flex items-center shrink-0">
@@ -60,11 +59,10 @@ export function Header() {
               <a
                 key={label}
                 href={href}
-                className={`font-inter text-sm transition-colors duration-200 px-4 py-2 relative border-b-2 pb-1.5 ${
-                  isActive
+                className={`font-inter text-sm transition-colors duration-200 px-4 py-2 relative border-b-2 pb-1.5 ${isActive
                     ? 'font-semibold border-gold text-gold'
                     : 'font-medium border-transparent text-paper/78 hover:text-gold-light'
-                }`}
+                  }`}
               >
                 {label}
               </a>
@@ -95,7 +93,7 @@ export function Header() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="md:hidden bg-[#5e0d18] border-t border-gold/12 px-6 py-4 pb-6 flex flex-col gap-1 transition-all duration-300">
+        <div className="md:hidden bg-wine-dark border-t border-gold/12 px-6 py-4 pb-6 flex flex-col gap-1 transition-all duration-300">
           {NAV.map(({ label, href }) => (
             <a
               key={label}

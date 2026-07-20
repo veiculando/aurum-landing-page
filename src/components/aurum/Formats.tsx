@@ -47,7 +47,7 @@ export function Formats() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-24 pb-16">
         <div className="flex items-center gap-4 mb-5">
           <div className="w-10 h-[1.5px] bg-gold-grad" />
-          <span className="font-inter text-xs font-bold tracking-widest uppercase text-[#9a7a1d]">
+          <span className="font-inter text-xs font-bold tracking-widest uppercase text-gold">
             Formatos de Mídia
           </span>
         </div>
@@ -64,11 +64,11 @@ export function Formats() {
       </div>
 
       {/* ── Grade fotográfica ── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 auto-rows-[420px] md:h-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 auto-rows-[420px]">
         {FORMATS.map(({ Icon, title, desc, photo }, i) => (
           <div
             key={title}
-            className="group relative overflow-hidden cursor-default h-[420px] md:h-auto"
+            className="group relative overflow-hidden cursor-default h-[420px]"
           >
             {/* Foto de fundo */}
             <div
