@@ -128,39 +128,37 @@ export function History() {
         </div>
 
         {/* Timeline Graph */}
-        <div className="relative mb-16 h-[100px] w-full hidden md:block">
-          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 100">
+        <div className="relative mb-24 h-[100px] md:h-[120px] w-full hidden md:block">
+          <svg className="absolute inset-0 w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 100 100">
             <path 
-              d="M 10 50 Q 120 10, 230 50 T 450 50 T 670 50 T 890 50 Q 945 10, 990 50" 
+              d="M 0 50 Q 12.5 -20, 25 50 T 50 50 T 75 50 T 100 50" 
               fill="none" 
               stroke="#e2d2a4" 
-              strokeWidth="2" 
+              strokeWidth="1.5" 
             />
           </svg>
           
-          <div className="absolute inset-0 w-full h-full flex items-center justify-between px-[1%]">
+          <div className="absolute inset-0 w-full h-full pointer-events-none">
             {MILESTONES.map((m, i) => {
               const isActive = i === currentIndex;
               
-              // Approximate alternating Y positions based on the sine wave curve
-              let yOffset = "0px";
-              if (i === 1) yOffset = "-25px";
-              if (i === 3) yOffset = "25px";
-              if (i === 5) yOffset = "-25px";
-              if (i === 7) yOffset = "25px";
+              const xPercent = i * 12.5;
+              let yPercent = 50;
+              if (i === 1 || i === 5) yPercent = 15;
+              if (i === 3 || i === 7) yPercent = 85;
               
               return (
                 <div 
                   key={m.year} 
-                  className="relative flex flex-col items-center justify-center cursor-pointer group"
-                  style={{ transform: `translateY(${yOffset})` }}
+                  className="absolute pointer-events-auto cursor-pointer group flex flex-col items-center justify-center"
+                  style={{ left: `${xPercent}%`, top: `${yPercent}%`, transform: 'translate(-50%, -50%)' }}
                   onClick={() => setCurrentIndex(i)}
                 >
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white shadow-[0_2px_10px_rgba(138,0,9,0.3)] scale-125 z-10' : 'bg-white border-2 border-[#d9b442] group-hover:scale-110 z-0'}`}>
-                    {isActive && <div className="w-3 h-3 rounded-full bg-wine" />}
+                  <div className={`w-4 h-4 md:w-[18px] md:h-[18px] rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white shadow-[0_4px_12px_rgba(138,0,9,0.3)] scale-[1.3] z-10' : 'bg-white border-2 border-[#d9b442] group-hover:scale-110 z-0'}`}>
+                    {isActive && <div className="w-2.5 h-2.5 rounded-full bg-wine" />}
                   </div>
                   
-                  <span className={`absolute top-7 font-fraunces text-sm transition-all duration-300 ${isActive ? 'text-wine font-bold text-base' : 'text-on-surface font-semibold'}`}>
+                  <span className={`absolute top-6 md:top-7 font-fraunces text-[13px] md:text-sm transition-all duration-300 ${isActive ? 'text-wine font-bold scale-110' : 'text-on-surface font-semibold'}`}>
                     {m.year}
                   </span>
                 </div>
