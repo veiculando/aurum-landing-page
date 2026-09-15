@@ -1,33 +1,35 @@
 import Image from 'next/image';
 import { Phone, Mail, MapPin, Instagram, Linkedin, Facebook } from 'lucide-react';
-import { APP_LINK, CONTACT_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
+import { DEFAULT_APP_LINK, DEFAULT_CONTACT_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
 
-// Cruzamento com o App WL (app_link) e o WhatsApp comercial (contact_link).
-// "Minhas Campanhas" não tem rota ainda (Sprint 11.5 do App WL) e
-// Preços/Cases/Blog/Ajuda/Minha Conta/Termos/Privacidade não têm página em
-// nenhum dos dois produtos — omitidos em vez de apontar para link morto.
-const EMPRESA_LINKS = [
-  { label: 'Catálogo', href: APP_LINK, external: true },
-  { label: 'Como Funciona', href: '#contato', external: false },
-  { label: 'Sobre nós', href: '#sobre', external: false },
-  { label: 'Contato', href: CONTACT_LINK, external: true },
-];
+type FooterProps = { appLink?: string; contactLink?: string };
 
-const COLUMNS = [
-  { title: 'Empresa', items: EMPRESA_LINKS },
-  {
-    title: 'Região',
-    items: ['São José dos Campos', 'Taubaté', 'Jacareí', 'Caraguatatuba', 'Ubatuba', 'São Sebastião']
-      .map(label => ({ label, href: '#', external: false })),
-  },
-  {
-    title: 'Formatos',
-    items: ['Outdoor', 'Relógio de Rua', 'Painéis Digitais', 'Totem & Mobiliário', 'Busdoor', 'Front Light']
-      .map(label => ({ label, href: '#', external: false })),
-  },
-];
+export function Footer({ appLink = DEFAULT_APP_LINK, contactLink = DEFAULT_CONTACT_LINK }: FooterProps) {
+  // Cruzamento com o App WL (app_link) e o WhatsApp comercial (contact_link).
+  // "Minhas Campanhas" não tem rota ainda (Sprint 11.5 do App WL) e
+  // Preços/Cases/Blog/Ajuda/Minha Conta/Termos/Privacidade não têm página em
+  // nenhum dos dois produtos — omitidos em vez de apontar para link morto.
+  const EMPRESA_LINKS = [
+    { label: 'Catálogo', href: appLink, external: true },
+    { label: 'Como Funciona', href: '#contato', external: false },
+    { label: 'Sobre nós', href: '#sobre', external: false },
+    { label: 'Contato', href: contactLink, external: true },
+  ];
 
-export function Footer() {
+  const COLUMNS = [
+    { title: 'Empresa', items: EMPRESA_LINKS },
+    {
+      title: 'Região',
+      items: ['São José dos Campos', 'Taubaté', 'Jacareí', 'Caraguatatuba', 'Ubatuba', 'São Sebastião']
+        .map(label => ({ label, href: '#', external: false })),
+    },
+    {
+      title: 'Formatos',
+      items: ['Outdoor', 'Relógio de Rua', 'Painéis Digitais', 'Totem & Mobiliário', 'Busdoor', 'Front Light']
+        .map(label => ({ label, href: '#', external: false })),
+    },
+  ];
+
   return (
     <footer className="relative bg-[#5e0f1a] overflow-hidden">
       {/* Gold accent top */}

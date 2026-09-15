@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Footer } from './Footer';
-import { APP_LINK, CONTACT_LINK } from '@/lib/site-links';
+import { DEFAULT_APP_LINK as APP_LINK, DEFAULT_CONTACT_LINK as CONTACT_LINK } from '@/lib/site-links';
 
 describe('Footer exibe os dados de contato atualizados', () => {
   it('telefone, e-mail e endereço batem com o doc do cliente', () => {
