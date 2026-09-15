@@ -1,11 +1,24 @@
 import Image from 'next/image';
 import { Phone, Mail, MapPin, Instagram, Linkedin, Facebook } from 'lucide-react';
 
-const LINKS = {
+const STATIC_LINKS = {
   'Formatos': ['Outdoor', 'Relógio de Rua', 'Painéis Digitais', 'Totem & Mobiliário', 'Busdoor', 'Front Light'],
   'Região': ['São José dos Campos', 'Taubaté', 'Jacareí', 'Caraguatatuba', 'Ubatuba', 'São Sebastião'],
-  'Empresa': ['Sobre nós', 'Clientes', 'Blog', 'Trabalhe conosco', 'Política de privacidade'],
 };
+
+// Cruzamento com o App WL (app.aurumooh.com.br). Rotas confirmadas em
+// Veiculando.WhiteLabel.App/src/app/app.routes.ts — só linka o que existe
+// hoje. "Minhas Campanhas" não tem rota ainda (Sprint 11.5 do App WL) e
+// Preços/Cases/Blog/Ajuda/Minha Conta/Termos/Privacidade não têm página em
+// nenhum dos dois produtos — omitidos em vez de apontar para link morto.
+const EMPRESA_LINKS = [
+  { label: 'Catálogo', href: 'https://app.aurumooh.com.br/mapa' },
+  { label: 'Como Funciona', href: '#contato' },
+  { label: 'Sobre nós', href: '#sobre' },
+  { label: 'Contato', href: '#contato' },
+  // Texto descritivo pendente do cliente (cortado no PDF) — link entra só com o rótulo.
+  { label: 'Alugue seu imóvel', href: 'https://aurumooh.com.br/locacoes.php' },
+];
 
 export function Footer() {
   return (
@@ -37,9 +50,9 @@ export function Footer() {
               {/* Contact info */}
               <div className="flex flex-col gap-3.5">
                 {[
-                  { Icon: Phone, text: '(12) 3901-0000' },
-                  { Icon: Mail,  text: 'contato@aurumooh.com.br' },
-                  { Icon: MapPin,text: 'São José dos Campos, SP' },
+                  { Icon: Phone, text: '(11) 94477-4353' },
+                  { Icon: Mail,  text: 'comercial@aurumooh.com.br' },
+                  { Icon: MapPin,text: 'Rua Francelino Rodrigues, 178 - Vl São Sebastião - Mogi das Cruzes' },
                 ].map(({ Icon, text }) => (
                   <div key={text} className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-gold/12 flex items-center justify-center shrink-0">
@@ -65,7 +78,7 @@ export function Footer() {
             </div>
 
             {/* Link columns */}
-            {Object.entries(LINKS).map(([title, items]) => (
+            {Object.entries(STATIC_LINKS).map(([title, items]) => (
               <div key={title} className="flex-1 min-w-[160px]">
                 <h5 className="font-fraunces font-semibold text-base text-paper mb-6 tracking-wide">{title}</h5>
                 <ul className="list-none flex flex-col gap-3 p-0 m-0">
@@ -82,6 +95,23 @@ export function Footer() {
                 </ul>
               </div>
             ))}
+
+            {/* Empresa: âncoras da própria landing + cruzamento com o App WL */}
+            <div className="flex-1 min-w-[160px]">
+              <h5 className="font-fraunces font-semibold text-base text-paper mb-6 tracking-wide">Empresa</h5>
+              <ul className="list-none flex flex-col gap-3 p-0 m-0">
+                {EMPRESA_LINKS.map(({ label, href }) => (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      className="font-inter text-sm text-paper/50 no-underline transition-colors duration-200 hover:text-gold"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 

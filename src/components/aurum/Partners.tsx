@@ -46,7 +46,7 @@ export function Partners() {
             <span className="text-wine">na aurum OOH</span>
           </h2>
           <p className="font-inter text-base text-on-surface max-w-md leading-relaxed">
-            Mais de 500 campanhas executadas com excelência. Conheça algumas das marcas que escolheram nossa rede para crescer na região.
+            Mais de 5 mil campanhas de sucesso executadas com excelência. Conheça algumas das marcas que escolheram nossa rede para crescer na região.
           </p>
         </div>
       </div>

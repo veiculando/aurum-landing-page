@@ -6,7 +6,7 @@ import { Network, TrendingUp, HandHeart } from 'lucide-react';
 const VALUES = [
   {
     title: 'Missão',
-    text: 'Conectar marcas ao público certo com inteligência, presença e impacto — gerando resultados mensuráveis para cada cliente que confia em nossa rede.',
+    text: 'Promover conexões entre marcas e pessoas com inteligência, presença e impacto — gerando resultados mensuráveis para cada cliente que confia em nossa rede.',
     icon: <Network className="w-6 h-6 text-wine" />,
   },
   {
