@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Play, CheckCircle2 } from 'lucide-react';
+import { APP_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
 
 const STEPS = [
   {
@@ -58,7 +59,8 @@ export function CtaSection() {
 
             {/* CTA button */}
             <a
-              href="mailto:contato@aurumooh.com.br"
+              href={APP_LINK}
+              {...EXTERNAL_LINK_PROPS}
               className="inline-flex items-center gap-3 bg-wine-grad text-[#F9F7F2] font-inter text-[15px] font-bold tracking-wider uppercase py-5 px-11 rounded-full shadow-[0_6px_32px_rgba(138,0,9,0.42)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(138,0,9,0.6)]"
             >
               Solicitar proposta gratuita <ArrowRight size={18} />

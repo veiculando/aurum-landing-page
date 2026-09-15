@@ -2,6 +2,12 @@
 
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { WINE, WINE_MID, GOLD, GOLD_LIGHT } from './tokens';
+
+// Cores alternadas dos pontos não-ativos da timeline — variedade visual
+// pedida no ajuste de Assurance. Paleta on-brand (tokens existentes); cores
+// exatas do Figma ficam para confirmar quando o MCP do Figma reconectar.
+const DOT_COLORS = [WINE, GOLD, WINE_MID, GOLD_LIGHT];
 
 // Conteúdo placeholder: anos e eventos aguardam confirmação com o Marcelo
 // (evolução real de equipamento: Outdoor de Madeira → Ferro → Elegance →
@@ -130,39 +136,28 @@ export function History() {
           </p>
         </div>
 
-        {/* Timeline Graph */}
-        <div className="relative mb-16 h-[100px] w-full hidden md:block">
-          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 100">
-            <path 
-              d="M 10 50 Q 120 10, 230 50 T 450 50 T 670 50 T 890 50 Q 945 10, 990 50" 
-              fill="none" 
-              stroke="#e2d2a4" 
-              strokeWidth="2" 
-            />
-          </svg>
-          
+        {/* Timeline Graph — linha reta (não distorce entre breakpoints) + pontos coloridos */}
+        <div className="relative mb-16 h-[64px] w-full hidden md:block">
+          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[2px] bg-[#e2d2a4]" />
+
           <div className="absolute inset-0 w-full h-full flex items-center justify-between px-[1%]">
             {MILESTONES.map((m, i) => {
               const isActive = i === currentIndex;
-              
-              // Approximate alternating Y positions based on the sine wave curve
-              let yOffset = "0px";
-              if (i === 1) yOffset = "-25px";
-              if (i === 3) yOffset = "25px";
-              if (i === 5) yOffset = "-25px";
-              if (i === 7) yOffset = "25px";
-              
+              const dotColor = DOT_COLORS[i % DOT_COLORS.length];
+
               return (
-                <div 
-                  key={m.year} 
+                <div
+                  key={m.year}
                   className="relative flex flex-col items-center justify-center cursor-pointer group"
-                  style={{ transform: `translateY(${yOffset})` }}
                   onClick={() => setCurrentIndex(i)}
                 >
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white shadow-[0_2px_10px_rgba(138,0,9,0.3)] scale-125 z-10' : 'bg-white border-2 border-[#d9b442] group-hover:scale-110 z-0'}`}>
+                  <div
+                    className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white shadow-[0_2px_10px_rgba(138,0,9,0.3)] scale-125 z-10' : 'group-hover:scale-110 z-0'}`}
+                    style={isActive ? undefined : { background: dotColor, border: '2px solid #ffffff' }}
+                  >
                     {isActive && <div className="w-3 h-3 rounded-full bg-wine" />}
                   </div>
-                  
+
                   <span className={`absolute top-7 font-fraunces text-sm transition-all duration-300 ${isActive ? 'text-wine font-bold text-base' : 'text-on-surface font-semibold'}`}>
                     {m.year}
                   </span>
@@ -171,7 +166,7 @@ export function History() {
             })}
           </div>
         </div>
-        
+
         {/* Mobile timeline substitute */}
         <div className="flex md:hidden overflow-x-auto gap-4 pb-6 mb-8 scrollbar-hide">
           {MILESTONES.map((m, i) => (

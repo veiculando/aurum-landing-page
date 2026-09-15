@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Footer } from './Footer';
+import { APP_LINK, CONTACT_LINK } from '@/lib/site-links';
 
 describe('Footer exibe os dados de contato atualizados', () => {
   it('telefone, e-mail e endereço batem com o doc do cliente', () => {
@@ -11,19 +12,34 @@ describe('Footer exibe os dados de contato atualizados', () => {
   });
 });
 
-describe('Footer inclui o link Alugue seu imóvel', () => {
-  it('aponta para https://aurumooh.com.br/locacoes.php mesmo sem o texto descritivo', () => {
+describe('Footer não tem mais o link Alugue seu imóvel', () => {
+  it('não existe (correção do cliente na revisão de Assurance)', () => {
     render(<Footer />);
-    const link = screen.getByRole('link', { name: /alugue seu imóvel/i });
-    expect(link).toHaveAttribute('href', 'https://aurumooh.com.br/locacoes.php');
+    expect(screen.queryByText(/alugue seu imóvel/i)).not.toBeInTheDocument();
   });
 });
 
-describe('Footer linka para o Catálogo do App WL', () => {
-  it('"Catálogo" aponta para https://app.aurumooh.com.br/mapa', () => {
+describe('Footer linka Catálogo para o app_link e Contato para o contact_link, em nova aba', () => {
+  it('"Catálogo" aponta para o APP_LINK', () => {
     render(<Footer />);
-    const link = screen.getByRole('link', { name: /catálogo/i });
-    expect(link).toHaveAttribute('href', 'https://app.aurumooh.com.br/mapa');
+    const link = screen.getByRole('link', { name: /^catálogo$/i });
+    expect(link).toHaveAttribute('href', APP_LINK);
+    expect(link).toHaveAttribute('target', '_blank');
+  });
+
+  it('"Contato" aponta para o CONTACT_LINK', () => {
+    render(<Footer />);
+    const link = screen.getByRole('link', { name: /^contato$/i });
+    expect(link).toHaveAttribute('href', CONTACT_LINK);
+    expect(link).toHaveAttribute('target', '_blank');
+  });
+});
+
+describe('Footer ordena as colunas: Empresa primeiro, Região segundo, Formatos terceiro', () => {
+  it('os títulos das colunas aparecem nessa ordem no DOM', () => {
+    const { container } = render(<Footer />);
+    const titles = Array.from(container.querySelectorAll('h5')).map(h => h.textContent);
+    expect(titles).toEqual(['Empresa', 'Região', 'Formatos']);
   });
 });
 
