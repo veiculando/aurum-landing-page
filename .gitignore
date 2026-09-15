@@ -40,6 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# supabase
-/supabase/
-
+# supabase local dev artifacts (migrations themselves are versioned)
+/supabase/.branches
+/supabase/.temp
