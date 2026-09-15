@@ -1,23 +1,30 @@
 import Image from 'next/image';
 import { Phone, Mail, MapPin, Instagram, Linkedin, Facebook } from 'lucide-react';
+import { APP_LINK, CONTACT_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
 
-const STATIC_LINKS = {
-  'Formatos': ['Outdoor', 'Relógio de Rua', 'Painéis Digitais', 'Totem & Mobiliário', 'Busdoor', 'Front Light'],
-  'Região': ['São José dos Campos', 'Taubaté', 'Jacareí', 'Caraguatatuba', 'Ubatuba', 'São Sebastião'],
-};
-
-// Cruzamento com o App WL (app.aurumooh.com.br). Rotas confirmadas em
-// Veiculando.WhiteLabel.App/src/app/app.routes.ts — só linka o que existe
-// hoje. "Minhas Campanhas" não tem rota ainda (Sprint 11.5 do App WL) e
+// Cruzamento com o App WL (app_link) e o WhatsApp comercial (contact_link).
+// "Minhas Campanhas" não tem rota ainda (Sprint 11.5 do App WL) e
 // Preços/Cases/Blog/Ajuda/Minha Conta/Termos/Privacidade não têm página em
 // nenhum dos dois produtos — omitidos em vez de apontar para link morto.
 const EMPRESA_LINKS = [
-  { label: 'Catálogo', href: 'https://app.aurumooh.com.br/mapa' },
-  { label: 'Como Funciona', href: '#contato' },
-  { label: 'Sobre nós', href: '#sobre' },
-  { label: 'Contato', href: '#contato' },
-  // Texto descritivo pendente do cliente (cortado no PDF) — link entra só com o rótulo.
-  { label: 'Alugue seu imóvel', href: 'https://aurumooh.com.br/locacoes.php' },
+  { label: 'Catálogo', href: APP_LINK, external: true },
+  { label: 'Como Funciona', href: '#contato', external: false },
+  { label: 'Sobre nós', href: '#sobre', external: false },
+  { label: 'Contato', href: CONTACT_LINK, external: true },
+];
+
+const COLUMNS = [
+  { title: 'Empresa', items: EMPRESA_LINKS },
+  {
+    title: 'Região',
+    items: ['São José dos Campos', 'Taubaté', 'Jacareí', 'Caraguatatuba', 'Ubatuba', 'São Sebastião']
+      .map(label => ({ label, href: '#', external: false })),
+  },
+  {
+    title: 'Formatos',
+    items: ['Outdoor', 'Relógio de Rua', 'Painéis Digitais', 'Totem & Mobiliário', 'Busdoor', 'Front Light']
+      .map(label => ({ label, href: '#', external: false })),
+  },
 ];
 
 export function Footer() {
@@ -77,41 +84,25 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Link columns */}
-            {Object.entries(STATIC_LINKS).map(([title, items]) => (
+            {/* Link columns — ordem: Empresa, Região, Formatos */}
+            {COLUMNS.map(({ title, items }) => (
               <div key={title} className="flex-1 min-w-[160px]">
                 <h5 className="font-fraunces font-semibold text-base text-paper mb-6 tracking-wide">{title}</h5>
                 <ul className="list-none flex flex-col gap-3 p-0 m-0">
-                  {items.map(item => (
-                    <li key={item}>
+                  {items.map(({ label, href, external }) => (
+                    <li key={label}>
                       <a
-                        href="#"
+                        href={href}
+                        {...(external ? EXTERNAL_LINK_PROPS : {})}
                         className="font-inter text-sm text-paper/50 no-underline transition-colors duration-200 hover:text-gold"
                       >
-                        {item}
+                        {label}
                       </a>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
-
-            {/* Empresa: âncoras da própria landing + cruzamento com o App WL */}
-            <div className="flex-1 min-w-[160px]">
-              <h5 className="font-fraunces font-semibold text-base text-paper mb-6 tracking-wide">Empresa</h5>
-              <ul className="list-none flex flex-col gap-3 p-0 m-0">
-                {EMPRESA_LINKS.map(({ label, href }) => (
-                  <li key={label}>
-                    <a
-                      href={href}
-                      className="font-inter text-sm text-paper/50 no-underline transition-colors duration-200 hover:text-gold"
-                    >
-                      {label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </div>
 

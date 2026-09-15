@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import { APP_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
 
 /* ── Canvas: perspectiva de avenida noturna com carros em movimento ── */
 function HighwayCanvas() {
@@ -211,7 +212,7 @@ const METRICS = [
 
 export function Hero() {
   return (
-    <section className="min-h-screen relative overflow-hidden flex flex-col justify-center bg-[#06060e]">
+    <section id="inicio" className="min-h-screen relative overflow-hidden flex flex-col justify-center bg-[#06060e]">
       {/* Vídeo / canvas de avenida */}
       <HighwayCanvas />
 
@@ -247,7 +248,8 @@ export function Hero() {
         {/* CTAs */}
         <div className="flex flex-wrap gap-4 mb-20">
           <a
-            href="https://app.aurumooh.com.br"
+            href={APP_LINK}
+            {...EXTERNAL_LINK_PROPS}
             className="inline-flex items-center gap-2.5 bg-wine-grad text-[#F9F7F2] font-inter text-sm font-bold tracking-wider uppercase py-4.5 px-9.5 rounded-full shadow-[0_6px_32px_rgba(138,0,9,0.45)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_rgba(138,0,9,0.62)]"
           >
             Anuncie agora <ArrowRight size={16} />
