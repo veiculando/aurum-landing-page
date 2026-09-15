@@ -3,6 +3,9 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
+// Conteúdo placeholder: anos e eventos aguardam confirmação com o Marcelo
+// (evolução real de equipamento: Outdoor de Madeira → Ferro → Elegance →
+// Triedro → Led). Não inventar anos/eventos novos até a confirmação chegar.
 const MILESTONES = [
   { 
     year: 1995, 
