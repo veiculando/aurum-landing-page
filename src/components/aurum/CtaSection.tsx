@@ -10,6 +10,10 @@ const STEPS = [
   {
     num: '02',
     title: 'Envie sua arte',
+    // Doc do cliente pedia "Faça upload automático dos arquivos...", mas não
+    // existe fluxo de upload automático em Veiculando.WhiteLabel.App/Api hoje
+    // (checado via grep — nenhum endpoint/tela de upload de arte). Mantido o
+    // texto atual em vez de prometer um fluxo que o produto ainda não tem.
     desc: 'Entregue os arquivos no formato aprovado ou conte com nossa equipe criativa para desenvolver uma peça de alto impacto para a sua campanha.',
   },
   {
