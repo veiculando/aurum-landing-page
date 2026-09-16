@@ -39,8 +39,11 @@ describe('Correção de Assurance: linha do tempo com cores variadas e sem disto
     expect(new Set(colors).size).toBeGreaterThan(1);
   });
 
-  it('a linha conectora é reta (sem SVG com preserveAspectRatio="none" que distorcia entre larguras)', () => {
+  it('a curva SVG usa as mesmas 9 posições x (0, 10, 990) dos pontos — não distorce entre larguras', () => {
     const { container } = render(<History />);
-    expect(container.querySelector('svg[preserveAspectRatio="none"]')).not.toBeInTheDocument();
+    const path = container.querySelector('svg path');
+    expect(path).toBeInTheDocument();
+    expect(path).toHaveAttribute('d', expect.stringContaining('M 10 50'));
+    expect(path).toHaveAttribute('d', expect.stringContaining('L 990 50'));
   });
 });
