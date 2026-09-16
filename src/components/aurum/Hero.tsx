@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
-import { APP_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
+import { DEFAULT_APP_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
 
 /* ── Canvas: perspectiva de avenida noturna com carros em movimento ── */
 function HighwayCanvas() {
@@ -210,7 +210,9 @@ const METRICS = [
   { value: '200+', unit: 'pontos',  label: 'estratégicos' },
 ];
 
-export function Hero() {
+type HeroProps = { appLink?: string };
+
+export function Hero({ appLink = DEFAULT_APP_LINK }: HeroProps) {
   return (
     <section id="inicio" className="min-h-screen relative overflow-hidden flex flex-col justify-center bg-[#06060e]">
       {/* Vídeo / canvas de avenida */}
@@ -248,7 +250,7 @@ export function Hero() {
         {/* CTAs */}
         <div className="flex flex-wrap gap-4 mb-20">
           <a
-            href={APP_LINK}
+            href={appLink}
             {...EXTERNAL_LINK_PROPS}
             className="inline-flex items-center gap-2.5 bg-wine-grad text-[#F9F7F2] font-inter text-sm font-bold tracking-wider uppercase py-4.5 px-9.5 rounded-full shadow-[0_6px_32px_rgba(138,0,9,0.45)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_rgba(138,0,9,0.62)]"
           >

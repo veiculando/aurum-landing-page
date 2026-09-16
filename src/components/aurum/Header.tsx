@@ -1,20 +1,25 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
-import { APP_LINK, CONTACT_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
+import { DEFAULT_APP_LINK, DEFAULT_CONTACT_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
 
-const NAV = [
-  { label: 'Início', href: '#inicio' },
-  { label: 'Catálogo', href: '#cobertura' },
-  { label: 'Sobre', href: '#sobre' },
-  { label: 'Contato', href: CONTACT_LINK },
-];
+type HeaderProps = {
+  contactLink?: string;
+  appLink?: string;
+};
 
-export function Header() {
+export function Header({ contactLink = DEFAULT_CONTACT_LINK, appLink = DEFAULT_APP_LINK }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState('');
+
+  const NAV = useMemo(() => [
+    { label: 'Início', href: '#inicio' },
+    { label: 'Catálogo', href: '#cobertura' },
+    { label: 'Sobre', href: '#sobre' },
+    { label: 'Contato', href: contactLink },
+  ], [contactLink]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -35,7 +40,7 @@ export function Header() {
     // Run once initially
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [NAV]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-wine border-b border-gold/10 shadow-[0_4px_32px_rgba(0,0,0,0.35)]">
@@ -77,7 +82,7 @@ export function Header() {
 
           {/* CTA */}
           <a
-            href={APP_LINK}
+            href={appLink}
             {...EXTERNAL_LINK_PROPS}
             className="inline-flex items-center bg-gold-grad text-charcoal font-inter text-[13px] font-bold tracking-wider uppercase py-[11px] px-[26px] rounded-full shadow-[0_4px_18px_rgba(217,180,66,0.38)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(217,180,66,0.58)] shrink-0"
           >
@@ -110,7 +115,7 @@ export function Header() {
             </a>
           ))}
           <a
-            href={APP_LINK}
+            href={appLink}
             {...EXTERNAL_LINK_PROPS}
             onClick={() => setOpen(false)}
             className="block mt-5 text-center bg-gold-grad text-charcoal font-inter text-sm font-bold tracking-wider uppercase py-4 px-7 rounded-full shadow-[0_4px_18px_rgba(217,180,66,0.38)]"

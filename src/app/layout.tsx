@@ -3,6 +3,11 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/aurum/Header";
 import { Footer } from "@/components/aurum/Footer";
+import { getSiteLinks } from "@/lib/cms";
+
+// Header/Footer buscam contact_link/app_link no Supabase — revalida
+// periodicamente em vez de congelar no build.
+export const revalidate = 300;
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -37,22 +42,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { contactLink, appLink } = await getSiteLinks();
   return (
     <html
       lang="pt-BR"
       className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col pt-[76px]">
-        <Header />
+        <Header contactLink={contactLink} appLink={appLink} />
         <main className="flex-1 flex flex-col">
           {children}
         </main>
-        <Footer />
+        <Footer contactLink={contactLink} appLink={appLink} />
       </body>
     </html>
   );

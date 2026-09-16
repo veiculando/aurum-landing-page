@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Header } from './Header';
-import { APP_LINK, CONTACT_LINK } from '@/lib/site-links';
+import { DEFAULT_APP_LINK as APP_LINK, DEFAULT_CONTACT_LINK as CONTACT_LINK } from '@/lib/site-links';
 
 describe('Header — navegação e CTA apontam para os destinos corretos', () => {
   it('"Catálogo" leva para a âncora #cobertura, não mais #catalogo', () => {

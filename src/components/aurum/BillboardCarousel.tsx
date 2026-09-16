@@ -2,48 +2,27 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import type { Banner } from '@/lib/cms';
 
 const METAL = 'linear-gradient(180deg,#4a4a4a 0%,#2e2e2e 40%,#1c1c1c 100%)';
 const POLE_BG  = 'linear-gradient(90deg,#6a6a6a 0%,#4a4a4a 25%,#888 50%,#4a4a4a 75%,#6a6a6a 100%)';
 
-const SLIDES = [
-  {
-    tag:   'Para Agências',
-    title: 'Condições especiais para planejamento anual',
-    desc:  'Negocie circuitos completos no Vale do Paraíba com atendimento dedicado e relatórios de exibição.',
-    cta:   'Falar com o comercial',
-    photo: 'https://images.unsplash.com/photo-1762421028555-f18bf9596a60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-  },
-  {
-    tag:   'Alta Temporada',
-    title: 'Verão 2026: máxima visibilidade no Litoral Norte',
-    desc:  'Garanta seus pontos com antecedência e aproveite o fluxo de turistas na alta temporada do litoral paulista.',
-    cta:   'Ver pontos disponíveis',
-    photo: 'https://images.unsplash.com/photo-1781740146105-e2bd98e9ea6d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-  },
-  {
-    tag:   'Oferta Especial',
-    title: 'Pacote Vale do Paraíba: 5 pontos pelo preço de 4',
-    desc:  'Campanha completa com outdoor, digital e relógio de rua nas principais cidades do interior paulista.',
-    cta:   'Solicitar proposta',
-    photo: 'https://images.unsplash.com/photo-1771775751001-eab9483febe0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200',
-  },
-];
-
-export function BillboardCarousel() {
+export function BillboardCarousel({ slides }: { slides: Banner[] }) {
   const [current, setCurrent] = useState(0);
   const [paused,  setPaused]  = useState(false);
 
-  const next = useCallback(() => setCurrent(i => (i + 1) % SLIDES.length), []);
-  const prev = useCallback(() => setCurrent(i => (i - 1 + SLIDES.length) % SLIDES.length), []);
+  const next = useCallback(() => setCurrent(i => (i + 1) % slides.length), [slides.length]);
+  const prev = useCallback(() => setCurrent(i => (i - 1 + slides.length) % slides.length), [slides.length]);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || slides.length < 2) return;
     const t = setInterval(next, 5500);
     return () => clearInterval(t);
-  }, [paused, next]);
+  }, [paused, next, slides.length]);
 
-  const slide = SLIDES[current];
+  if (slides.length === 0) return null;
+
+  const slide = slides[current];
 
   return (
     <section
@@ -89,51 +68,23 @@ export function BillboardCarousel() {
             {/* Trilho superior do frame */}
             <div className="h-1.5 bg-gradient-to-r from-[#555] via-[#888] to-[#555] rounded-t-md mb-2" />
 
-            {/* Face do outdoor */}
-            <div className="relative rounded-md overflow-hidden min-h-[280px] md:min-h-[240px]">
-              {/* Slides com fade — foto de fundo */}
-              {SLIDES.map((s, i) => (
+            {/* Face do outdoor — imagem do banner (tabela `banners`), com link de destino */}
+            <a
+              href={slide.destino || undefined}
+              className="relative block rounded-md overflow-hidden min-h-[280px] md:min-h-[240px]"
+              aria-label="Ver oferta"
+            >
+              {slides.map((s, i) => (
                 <div
-                  key={i}
+                  key={s.id}
                   className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out pointer-events-none"
                   style={{
-                    backgroundImage: `url(${s.photo})`,
+                    backgroundImage: `url(${s.image_url})`,
                     opacity: i === current ? 1 : 0,
                   }}
                 />
               ))}
-
-              {/* Overlay gradiente escuro */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/20 pointer-events-none z-10" />
-
-              {/* Conteúdo do slide */}
-              <div className="relative z-20 p-8 sm:p-12 md:py-11 md:px-14 flex flex-col justify-center min-h-[280px] md:min-h-[240px]">
-                {/* Tag */}
-                <div className="self-start mb-5 bg-gold/18 border border-gold/40 rounded-full px-4 py-1">
-                  <span className="font-inter text-[11px] font-bold tracking-widest uppercase text-gold-light">
-                    {slide.tag}
-                  </span>
-                </div>
-
-                {/* Título */}
-                <h3 className="font-fraunces font-semibold text-xl sm:text-2xl md:text-3xl leading-tight text-paper mb-4.5 tracking-tight max-w-2xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
-                  {slide.title}
-                </h3>
-
-                {/* Descrição */}
-                <p className="font-inter text-sm md:text-base leading-relaxed text-paper/80 mb-9 max-w-lg drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">
-                  {slide.desc}
-                </p>
-
-                {/* CTA */}
-                <a
-                  href="#contato"
-                  className="inline-flex items-center gap-2 bg-wine-grad text-[#F9F7F2] font-inter text-[12px] font-bold tracking-widest uppercase py-3 px-7 rounded-full shadow-[0_4px_20px_rgba(138,0,9,0.45)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(138,0,9,0.65)] self-start"
-                >
-                  {slide.cta}
-                </a>
-              </div>
-            </div>
+            </a>
 
             {/* Trilho inferior */}
             <div className="h-1.5 bg-gradient-to-r from-[#555] via-[#888] to-[#555] rounded-b-md mt-2" />
@@ -144,38 +95,40 @@ export function BillboardCarousel() {
         </div>
 
         {/* ── Navegação ── */}
-        <div className="flex items-center justify-between mt-7">
-          {/* Dots */}
-          <div className="flex gap-2 items-center">
-            {SLIDES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                className={`h-2 p-0 border-none cursor-pointer rounded-full transition-all duration-300 ${
-                  i === current ? 'w-7 bg-gold-grad' : 'w-2 bg-wine/18'
-                }`}
-                aria-label={`Ir para slide ${i + 1}`}
-              />
-            ))}
-          </div>
+        {slides.length > 1 && (
+          <div className="flex items-center justify-between mt-7">
+            {/* Dots */}
+            <div className="flex gap-2 items-center">
+              {slides.map((s, i) => (
+                <button
+                  key={s.id}
+                  onClick={() => setCurrent(i)}
+                  className={`h-2 p-0 border-none cursor-pointer rounded-full transition-all duration-300 ${
+                    i === current ? 'w-7 bg-gold-grad' : 'w-2 bg-wine/18'
+                  }`}
+                  aria-label={`Ir para slide ${i + 1}`}
+                />
+              ))}
+            </div>
 
-          {/* Arrows */}
-          <div className="flex gap-2">
-            {[
-              { fn: prev, Icon: ArrowLeft, label: 'Anterior' },
-              { fn: next, Icon: ArrowRight, label: 'Próximo' },
-            ].map(({ fn, Icon, label }, i) => (
-              <button
-                key={i}
-                onClick={fn}
-                className="w-[38px] h-[38px] rounded-full border border-wine/18 bg-white flex items-center justify-center cursor-pointer text-wine shadow-[0_2px_10px_rgba(74,14,14,0.08)] transition-all duration-200 hover:bg-wine hover:text-white"
-                aria-label={label}
-              >
-                <Icon size={16} />
-              </button>
-            ))}
+            {/* Arrows */}
+            <div className="flex gap-2">
+              {[
+                { fn: prev, Icon: ArrowLeft, label: 'Anterior' },
+                { fn: next, Icon: ArrowRight, label: 'Próximo' },
+              ].map(({ fn, Icon, label }, i) => (
+                <button
+                  key={i}
+                  onClick={fn}
+                  className="w-[38px] h-[38px] rounded-full border border-wine/18 bg-white flex items-center justify-center cursor-pointer text-wine shadow-[0_2px_10px_rgba(74,14,14,0.08)] transition-all duration-200 hover:bg-wine hover:text-white"
+                  aria-label={label}
+                >
+                  <Icon size={16} />
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
