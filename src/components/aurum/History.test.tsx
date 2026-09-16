@@ -27,19 +27,39 @@ describe('Nossa História é exibida como carrossel navegável', () => {
   });
 });
 
-describe('Correção de Assurance: linha do tempo com cores variadas e sem distorção entre larguras', () => {
-  it('os pontos não-ativos têm cores diferentes entre si (não são todos o mesmo hollow dourado)', () => {
+describe('Timeline: 3 estados fixos de bolinha, todas centralizadas', () => {
+  const getDot = (container: HTMLElement, year: string) => {
+    const span = Array.from(container.querySelectorAll('span')).find(s => s.textContent === year);
+    return span?.parentElement?.querySelector('div') as HTMLElement | undefined;
+  };
+
+  it('a bolinha selecionada (1995, marco inicial) é vermelha sólida', () => {
     const { container } = render(<History />);
-    const yearLabels = ['2001', '2004', '2006'];
-    const colors = yearLabels.map(year => {
-      const span = Array.from(container.querySelectorAll('span')).find(s => s.textContent === year);
-      const dot = span?.parentElement?.querySelector('div');
-      return dot ? getComputedStyle(dot).background || (dot as HTMLElement).style.background : null;
-    });
-    expect(new Set(colors).size).toBeGreaterThan(1);
+    const dot = getDot(container, '1995');
+    expect(dot?.className).toContain('bg-wine');
   });
 
-  it('a curva SVG usa as mesmas 9 posições x (0, 10, 990) dos pontos — não distorce entre larguras', () => {
+  it('a última bolinha (2025) é dourada quando não selecionada', () => {
+    const { container } = render(<History />);
+    const dot = getDot(container, '2025');
+    expect(dot?.className).toContain('border-gold');
+  });
+
+  it('bolinhas do meio (nem ativa, nem última) são brancas/cinzas', () => {
+    const { container } = render(<History />);
+    const dot = getDot(container, '2010');
+    expect(dot?.className).not.toContain('bg-wine');
+    expect(dot?.className).not.toContain('border-gold');
+  });
+
+  it('nenhuma bolinha tem deslocamento vertical (translateY) — todas centralizadas', () => {
+    const { container } = render(<History />);
+    const dot = getDot(container, '2010');
+    const wrapper = dot?.parentElement as HTMLElement;
+    expect(wrapper.getAttribute('style') || '').not.toContain('translateY');
+  });
+
+  it('a curva SVG (decorativa) usa as mesmas 9 posições x (10 a 990) — não distorce entre larguras', () => {
     const { container } = render(<History />);
     const path = container.querySelector('svg path');
     expect(path).toBeInTheDocument();

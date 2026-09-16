@@ -2,12 +2,6 @@
 
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { WINE, WINE_MID, GOLD, GOLD_LIGHT } from './tokens';
-
-// Cores alternadas dos pontos não-ativos da timeline — variedade visual
-// pedida no ajuste de Assurance. Paleta on-brand (tokens existentes); cores
-// exatas do Figma ficam para confirmar quando o MCP do Figma reconectar.
-const DOT_COLORS = [WINE, GOLD, WINE_MID, GOLD_LIGHT];
 
 // Conteúdo placeholder: anos e eventos aguardam confirmação com o Marcelo
 // (evolução real de equipamento: Outdoor de Madeira → Ferro → Elegance →
@@ -151,29 +145,31 @@ export function History() {
             />
           </svg>
 
+          {/* Todas as bolinhas centralizadas na mesma linha — a onda atrás é
+              só decorativa. 3 estados: normal (branco/cinza), selecionada
+              (vermelho sólido), última (dourada). */}
           <div className="absolute inset-0 w-full h-full flex items-center justify-between px-[1%]">
             {MILESTONES.map((m, i) => {
               const isActive = i === currentIndex;
-              const dotColor = DOT_COLORS[i % DOT_COLORS.length];
-              // Mesma alternância da curva: pontos ímpares saem da linha de
-              // base (i%4===1 sobe, i%4===3 desce), pares ficam no centro.
-              const yOffset = i % 2 === 0 ? 0 : (i % 4 === 1 ? -25 : 25);
+              const isLast = i === MILESTONES.length - 1;
 
               return (
                 <div
                   key={m.year}
                   className="relative flex flex-col items-center justify-center cursor-pointer group"
-                  style={{ transform: `translateY(${yOffset}px)` }}
                   onClick={() => setCurrentIndex(i)}
                 >
                   <div
-                    className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${isActive ? 'bg-white shadow-[0_2px_10px_rgba(138,0,9,0.3)] scale-125 z-10' : 'group-hover:scale-110 z-0'}`}
-                    style={isActive ? undefined : { background: dotColor, border: '2px solid #ffffff' }}
-                  >
-                    {isActive && <div className="w-3 h-3 rounded-full bg-wine" />}
-                  </div>
+                    className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 border-2 ${
+                      isActive
+                        ? 'bg-wine border-wine shadow-[0_2px_10px_rgba(138,0,9,0.3)] scale-125 z-10'
+                        : isLast
+                          ? 'bg-white border-gold group-hover:scale-110 z-0'
+                          : 'bg-white border-[#e2d2a4] group-hover:scale-110 z-0'
+                    }`}
+                  />
 
-                  <span className={`absolute top-7 font-fraunces text-sm transition-all duration-300 ${isActive ? 'text-wine font-bold text-base' : 'text-on-surface font-semibold'}`}>
+                  <span className={`absolute top-7 font-fraunces text-sm transition-all duration-300 ${isActive ? 'text-wine font-bold text-base' : isLast ? 'text-[#9a7a1d] font-semibold' : 'text-on-surface font-semibold'}`}>
                     {m.year}
                   </span>
                 </div>
