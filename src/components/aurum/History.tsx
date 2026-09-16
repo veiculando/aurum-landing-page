@@ -136,19 +136,34 @@ export function History() {
           </p>
         </div>
 
-        {/* Timeline Graph — linha reta (não distorce entre breakpoints) + pontos coloridos */}
-        <div className="relative mb-16 h-[64px] w-full hidden md:block">
-          <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[2px] bg-[#e2d2a4]" />
+        {/* Timeline Graph — onda suave; a curva SVG usa as MESMAS 9 posições x
+            (uniformemente espaçadas) que os pontos abaixo, então os dois
+            escalam juntos com a largura do viewport (preserveAspectRatio
+            "none" só distorce quando curva e pontos não compartilham a
+            mesma referência de posição — esse era o bug original). */}
+        <div className="relative mb-16 h-[100px] w-full hidden md:block">
+          <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 100">
+            <path
+              d="M 10 50 Q 132.5 25, 193.75 37.5 Q 255 50, 316.25 62.5 Q 377.5 75, 438.75 62.5 Q 500 50, 561.25 37.5 Q 622.5 25, 683.75 37.5 Q 745 50, 806.25 62.5 Q 867.5 75, 928.75 62.5 L 990 50"
+              fill="none"
+              stroke="#e2d2a4"
+              strokeWidth="2"
+            />
+          </svg>
 
           <div className="absolute inset-0 w-full h-full flex items-center justify-between px-[1%]">
             {MILESTONES.map((m, i) => {
               const isActive = i === currentIndex;
               const dotColor = DOT_COLORS[i % DOT_COLORS.length];
+              // Mesma alternância da curva: pontos ímpares saem da linha de
+              // base (i%4===1 sobe, i%4===3 desce), pares ficam no centro.
+              const yOffset = i % 2 === 0 ? 0 : (i % 4 === 1 ? -25 : 25);
 
               return (
                 <div
                   key={m.year}
                   className="relative flex flex-col items-center justify-center cursor-pointer group"
+                  style={{ transform: `translateY(${yOffset}px)` }}
                   onClick={() => setCurrentIndex(i)}
                 >
                   <div
