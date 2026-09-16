@@ -1,13 +1,35 @@
 import Image from 'next/image';
 import { Phone, Mail, MapPin, Instagram, Linkedin, Facebook } from 'lucide-react';
+import { DEFAULT_APP_LINK, DEFAULT_CONTACT_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
 
-const LINKS = {
-  'Formatos': ['Outdoor', 'Relógio de Rua', 'Painéis Digitais', 'Totem & Mobiliário', 'Busdoor', 'Front Light'],
-  'Região': ['São José dos Campos', 'Taubaté', 'Jacareí', 'Caraguatatuba', 'Ubatuba', 'São Sebastião'],
-  'Empresa': ['Sobre nós', 'Clientes', 'Blog', 'Trabalhe conosco', 'Política de privacidade'],
-};
+type FooterProps = { appLink?: string; contactLink?: string };
 
-export function Footer() {
+export function Footer({ appLink = DEFAULT_APP_LINK, contactLink = DEFAULT_CONTACT_LINK }: FooterProps) {
+  // Cruzamento com o App WL (app_link) e o WhatsApp comercial (contact_link).
+  // "Minhas Campanhas" não tem rota ainda (Sprint 11.5 do App WL) e
+  // Preços/Cases/Blog/Ajuda/Minha Conta/Termos/Privacidade não têm página em
+  // nenhum dos dois produtos — omitidos em vez de apontar para link morto.
+  const EMPRESA_LINKS = [
+    { label: 'Catálogo', href: appLink, external: true },
+    { label: 'Como Funciona', href: '#contato', external: false },
+    { label: 'Sobre nós', href: '#sobre', external: false },
+    { label: 'Contato', href: contactLink, external: true },
+  ];
+
+  const COLUMNS = [
+    { title: 'Empresa', items: EMPRESA_LINKS },
+    {
+      title: 'Região',
+      items: ['São José dos Campos', 'Taubaté', 'Jacareí', 'Caraguatatuba', 'Ubatuba', 'São Sebastião']
+        .map(label => ({ label, href: '#', external: false })),
+    },
+    {
+      title: 'Formatos',
+      items: ['Outdoor', 'Relógio de Rua', 'Painéis Digitais', 'Totem & Mobiliário', 'Busdoor', 'Front Light']
+        .map(label => ({ label, href: '#', external: false })),
+    },
+  ];
+
   return (
     <footer className="relative bg-[#5e0f1a] overflow-hidden">
       {/* Gold accent top */}
@@ -37,9 +59,9 @@ export function Footer() {
               {/* Contact info */}
               <div className="flex flex-col gap-3.5">
                 {[
-                  { Icon: Phone, text: '(12) 3901-0000' },
-                  { Icon: Mail,  text: 'contato@aurumooh.com.br' },
-                  { Icon: MapPin,text: 'São José dos Campos, SP' },
+                  { Icon: Phone, text: '(11) 94477-4353' },
+                  { Icon: Mail,  text: 'comercial@aurumooh.com.br' },
+                  { Icon: MapPin,text: 'Rua Francelino Rodrigues, 178 - Vl São Sebastião - Mogi das Cruzes' },
                 ].map(({ Icon, text }) => (
                   <div key={text} className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-gold/12 flex items-center justify-center shrink-0">
@@ -64,18 +86,19 @@ export function Footer() {
               </div>
             </div>
 
-            {/* Link columns */}
-            {Object.entries(LINKS).map(([title, items]) => (
+            {/* Link columns — ordem: Empresa, Região, Formatos */}
+            {COLUMNS.map(({ title, items }) => (
               <div key={title} className="flex-1 min-w-[160px]">
                 <h5 className="font-fraunces font-semibold text-base text-paper mb-6 tracking-wide">{title}</h5>
                 <ul className="list-none flex flex-col gap-3 p-0 m-0">
-                  {items.map(item => (
-                    <li key={item}>
+                  {items.map(({ label, href, external }) => (
+                    <li key={label}>
                       <a
-                        href="#"
+                        href={href}
+                        {...(external ? EXTERNAL_LINK_PROPS : {})}
                         className="font-inter text-sm text-paper/50 no-underline transition-colors duration-200 hover:text-gold"
                       >
-                        {item}
+                        {label}
                       </a>
                     </li>
                   ))}

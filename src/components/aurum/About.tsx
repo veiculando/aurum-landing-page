@@ -39,7 +39,7 @@ const TEAM = [
 
 const STATS = [
   { n: '31',   label: 'Anos no mercado' },
-  { n: '500+', label: 'Campanhas realizadas' },
+  { n: '5K+',  label: 'Campanhas realizadas' },
   { n: '200+', label: 'Pontos estratégicos' },
   { n: '15+',  label: 'Cidades cobertas' },
 ];
@@ -62,7 +62,7 @@ export function About() {
               <span className="text-wine">marcas e pessoas</span>
             </h2>
             <p className="font-inter text-base md:text-lg leading-relaxed text-on-surface mb-5">
-              Fundada em 1995, a aurum OOH nasceu com uma missão clara: levar a mensagem certa para o lugar certo, no momento certo. Ao longo de três décadas construímos a mais completa rede de mídia exterior do Vale do Paraíba e Litoral Norte.
+              Fundada em 1995, a aurum OOH nasceu com uma missão clara: levar a mensagem certa para o lugar certo, no momento certo. Ao longo de três décadas construímos a mais completa rede de mídia exterior da Grande São Paulo, Vale do Paraíba e Litoral Norte.
             </p>
             <p className="font-inter text-base md:text-lg leading-relaxed text-on-surface">
               Hoje somos mais de 40 profissionais dedicados, operando 200+ pontos estratégicos em 15 cidades — com tecnologia de gestão e atendimento personalizado que fazem a diferença na sua campanha.

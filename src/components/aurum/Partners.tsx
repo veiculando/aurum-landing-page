@@ -1,37 +1,21 @@
 import React from 'react';
+import { getMarcas, type Marca } from '@/lib/cms';
 
-const PARTNERS = [
-  { name: 'Bradesco',         abbr: 'BRA', color: '#cc0000' },
-  { name: 'Unimed',           abbr: 'UNI', color: '#00843d' },
-  { name: 'Havan',            abbr: 'HAV', color: '#005ca9' },
-  { name: 'Shibata',          abbr: 'SHI', color: '#e60026' },
-  { name: 'Vanguarda',        abbr: 'VAN', color: '#1a1a6e' },
-  { name: 'Colinas Shopping', abbr: 'COL', color: '#8b6914' },
-  { name: 'Magazine Luiza',   abbr: 'MAG', color: '#0086ff' },
-  { name: 'Centervale',       abbr: 'CEN', color: '#c8102e' },
-  { name: 'Drogaria Total',   abbr: 'DRO', color: '#009036' },
-  { name: 'Univap',           abbr: 'UNV', color: '#003087' },
-];
-
-function PartnerCard({ name, abbr, color }: { name: string; abbr: string; color: string }) {
+function PartnerCard({ name, image_url }: { name: string; image_url: string }) {
   return (
     <div className="shrink-0 w-[180px] h-[90px] bg-white rounded-xl border border-wine/7 flex flex-col items-center justify-center gap-1.5 px-5 shadow-[0_2px_12px_rgba(74,14,14,0.07)]">
-      <div
-        className="w-10 h-10 rounded-lg flex items-center justify-center"
-        style={{
-          background: color,
-          boxShadow: `0 3px 12px ${color}44`,
-        }}
-      >
-        <span className="font-inter font-bold text-[13px] text-white tracking-wider">{abbr}</span>
-      </div>
+      <img
+        src={image_url}
+        alt={name}
+        className="max-h-9 max-w-[120px] object-contain"
+      />
       <span className="font-inter text-xs font-semibold text-on-surface tracking-wider text-center">{name}</span>
     </div>
   );
 }
 
-export function Partners() {
-  const doubled = [...PARTNERS, ...PARTNERS];
+export function PartnersView({ marcas }: { marcas: Marca[] }) {
+  const doubled = [...marcas, ...marcas];
 
   return (
     <section className="bg-white py-24 overflow-hidden">
@@ -46,7 +30,7 @@ export function Partners() {
             <span className="text-wine">na aurum OOH</span>
           </h2>
           <p className="font-inter text-base text-on-surface max-w-md leading-relaxed">
-            Mais de 500 campanhas executadas com excelência. Conheça algumas das marcas que escolheram nossa rede para crescer na região.
+            Mais de 5 mil campanhas de sucesso executadas com excelência. Conheça algumas das marcas que escolheram nossa rede para crescer na região.
           </p>
         </div>
       </div>
@@ -60,7 +44,7 @@ export function Partners() {
         <div className="overflow-hidden py-3">
           <div className="flex gap-5 w-max animate-[marquee_28s_linear_infinite]">
             {doubled.map((p, i) => (
-              <PartnerCard key={i} {...p} />
+              <PartnerCard key={`${p.id}-${i}`} {...p} />
             ))}
           </div>
         </div>
@@ -75,7 +59,7 @@ export function Partners() {
         <div className="overflow-hidden py-3">
           <div className="flex gap-5 w-max animate-[marqueeReverse_32s_linear_infinite]">
             {[...doubled].reverse().map((p, i) => (
-              <PartnerCard key={i} {...p} />
+              <PartnerCard key={`${p.id}-r${i}`} {...p} />
             ))}
           </div>
         </div>
@@ -93,4 +77,12 @@ export function Partners() {
       `}</style>
     </section>
   );
+}
+
+// Server Component: busca as marcas ativas no Supabase (tabela `marcas`).
+// Sem fallback hardcoded — se o banco estiver vazio/indisponível a seção
+// não deve fingir dados fictícios, só renderiza sem cards.
+export async function Partners() {
+  const marcas = await getMarcas();
+  return <PartnersView marcas={marcas} />;
 }

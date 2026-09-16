@@ -4,32 +4,59 @@ import { useState } from 'react';
 import { MapPin, Check } from 'lucide-react';
 
 const CITIES_VALE = [
+  'Mogi das Cruzes',
+  'Suzano',
+  'Poá',
   'São José dos Campos',
-  'Taubaté',
   'Jacareí',
-  'Pindamonhangaba',
-  'Guaratinguetá',
   'Caçapava',
+  'Taubaté',
 ];
 const CITIES_LITORAL = [
-  'Caraguatatuba',
-  'Ubatuba',
   'São Sebastião',
-  'Ilhabela',
+  'Bertioga',
 ];
 
 const PINS = [
-  { x: 52,  y: 192, label: 'Jacareí',          region: 'vale' },
+  { x: 40,  y: 205, label: 'Mogi das Cruzes',    region: 'vale' },
+  { x: 25,  y: 217, label: 'Suzano',             region: 'vale' },
+  { x: 12,  y: 227, label: 'Poá',                region: 'vale' },
+  { x: 52,  y: 192, label: 'Jacareí',            region: 'vale' },
   { x: 88,  y: 161, label: 'São José dos Campos', region: 'vale' },
-  { x: 166, y: 138, label: 'Caçapava',         region: 'vale' },
-  { x: 234, y: 119, label: 'Taubaté',          region: 'vale' },
-  { x: 276, y: 92,  label: 'Pindamonhangaba',  region: 'vale' },
-  { x: 395, y: 64,  label: 'Guaratinguetá',    region: 'vale' },
-  { x: 297, y: 274, label: 'Caraguatatuba',    region: 'litoral' },
-  { x: 322, y: 314, label: 'Ilhabela',         region: 'litoral' },
-  { x: 303, y: 319, label: 'São Sebastião',    region: 'litoral' },
-  { x: 450, y: 225, label: 'Ubatuba',          region: 'litoral' },
+  { x: 166, y: 138, label: 'Caçapava',           region: 'vale' },
+  { x: 234, y: 119, label: 'Taubaté',            region: 'vale' },
+  { x: 303, y: 319, label: 'São Sebastião',      region: 'litoral' },
+  { x: 250, y: 333, label: 'Bertioga',           region: 'litoral' },
 ];
+
+const HIGHWAYS = [
+  { name: 'BR-116 Via Dutra', color: '#8a0009' },
+  { name: 'SP-070 Ayrton Senna/Carvalho Pinto', color: '#8a0009' },
+  { name: 'SP-088 Mogi-Dutra', color: '#8a0009' },
+  { name: 'SP-098 Mogi-Bertioga', color: '#d9b442' },
+  { name: 'SP-099 Tamoios', color: '#d9b442' },
+  { name: 'SP-055/BR-101 Rio-Santos', color: '#d9b442' },
+];
+
+function HighwaysLegend() {
+  return (
+    <div className="mt-6 bg-paper rounded-2xl border border-wine/9 p-5">
+      <span className="font-inter text-[11px] font-bold tracking-widest uppercase text-[#9a7a1d] mb-4 block">
+        Principais rodovias do corredor
+      </span>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-3">
+        {HIGHWAYS.map(hw => (
+          <li key={hw.name} data-highway-row className="flex items-center gap-2.5">
+            <svg width="28" height="10" viewBox="0 0 28 10" aria-hidden="true">
+              <path d="M 1 5 L 27 5" stroke={hw.color} strokeWidth="2" strokeDasharray="3 3" strokeLinecap="round" />
+            </svg>
+            <span className="font-inter text-xs text-on-surface font-medium">{hw.name}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 function MapSVG() {
   const [hoveredPin, setHoveredPin] = useState<string | null>(null);
@@ -44,14 +71,14 @@ function MapSVG() {
         {/* Road networks */}
         {/* Rodovia Presidente Dutra (Vale do Paraíba corridor) */}
         <path
-          d="M 20,210 L 52,192 L 88,161 L 166,138 L 234,119 L 276,92 L 395,64 L 480,50"
+          d="M 12,227 L 25,217 L 40,205 L 52,192 L 88,161 L 166,138 L 234,119 L 276,92 L 395,64 L 480,50"
           stroke="#e2e2da"
           strokeWidth="6"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
-          d="M 20,210 L 52,192 L 88,161 L 166,138 L 234,119 L 276,92 L 395,64 L 480,50"
+          d="M 12,227 L 25,217 L 40,205 L 52,192 L 88,161 L 166,138 L 234,119 L 276,92 L 395,64 L 480,50"
           stroke="#8a0009"
           strokeWidth="1.5"
           strokeDasharray="4 4"
@@ -80,20 +107,11 @@ function MapSVG() {
 
         {/* Rodovia Rio-Santos (Litoral Norte corridor) */}
         <path
-          d="M 240,330 L 303,319 L 297,274 L 380,245 L 450,225 L 490,215"
+          d="M 250,333 L 303,319 L 297,274 L 380,245 L 450,225 L 490,215"
           stroke="#e2e2da"
           strokeWidth="5"
           strokeLinecap="round"
           strokeLinejoin="round"
-        />
-
-        {/* Ferry / Balsa (São Sebastião to Ilhabela) */}
-        <path
-          d="M 303,319 L 322,314"
-          stroke="#d9b442"
-          strokeWidth="2"
-          strokeDasharray="3 3"
-          strokeLinecap="round"
         />
 
         {/* Coastline visual effect */}
@@ -202,7 +220,7 @@ export function Coverage() {
           </h2>
 
           <p className="font-inter text-base md:text-lg leading-relaxed text-on-surface mb-11">
-            Nossa malha de pontos cobre o eixo do Vale do Paraíba de ponta a ponta, e sobe a Serra pelo corredor Tamoios até o Litoral Norte — alcançando mais de <strong className="text-wine font-semibold">4 milhões de impactos</strong> mensais.
+            Nossa malha de pontos cobre o Alto Tietê, o Vale do Paraíba de ponta a ponta, e sobe a Serra pelo corredor Tamoios até o Litoral Norte — alcançando mais de <strong className="text-wine font-semibold">4 milhões de impactos</strong> mensais.
           </p>
 
           {/* City columns */}
@@ -227,18 +245,21 @@ export function Coverage() {
 
         {/* Right: SVG map */}
         <div className="flex-1 min-w-[360px] w-full flex justify-center">
-          <div className="bg-paper rounded-3xl p-6 md:p-8 border border-wine/9 shadow-[0_12px_48px_rgba(138,0,9,0.09)] w-full max-w-[540px]">
-            <div className="flex items-center justify-between mb-6">
-              <span className="font-inter text-[11px] font-bold tracking-widest uppercase text-[#9a7a1d]">
-                SP — Vale do Paraíba & Litoral Norte
-              </span>
-              <div className="flex gap-1.5">
-                {['#ff6b6b','#ffd93d','#6bcb77'].map(c => (
-                  <div key={c} className="w-2.5 h-2.5 rounded-full" style={{ background: c }} />
-                ))}
+          <div className="w-full max-w-[540px]">
+            <div className="bg-paper rounded-3xl p-6 md:p-8 border border-wine/9 shadow-[0_12px_48px_rgba(138,0,9,0.09)] w-full">
+              <div className="flex items-center justify-between mb-6">
+                <span className="font-inter text-[11px] font-bold tracking-widest uppercase text-[#9a7a1d]">
+                  GRANDE SP | VALE DO PARAIBA | LITORAL NORTE
+                </span>
+                <div className="flex gap-1.5">
+                  {['#ff6b6b','#ffd93d','#6bcb77'].map(c => (
+                    <div key={c} className="w-2.5 h-2.5 rounded-full" style={{ background: c }} />
+                  ))}
+                </div>
               </div>
+              <MapSVG />
             </div>
-            <MapSVG />
+            <HighwaysLegend />
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
+import { DEFAULT_APP_LINK, EXTERNAL_LINK_PROPS } from '@/lib/site-links';
 
 /* ── Canvas: perspectiva de avenida noturna com carros em movimento ── */
 function HighwayCanvas() {
@@ -205,13 +206,15 @@ function HighwayCanvas() {
 /* ── Métricas do hero ── */
 const METRICS = [
   { value: '31',   unit: 'anos',    label: 'de experiência' },
-  { value: '15+',  unit: 'cidades', label: 'no Vale e Litoral' },
+  { value: '15+',  unit: 'cidades', label: 'na Grande SP, Interior e Litoral' },
   { value: '200+', unit: 'pontos',  label: 'estratégicos' },
 ];
 
-export function Hero() {
+type HeroProps = { appLink?: string };
+
+export function Hero({ appLink = DEFAULT_APP_LINK }: HeroProps) {
   return (
-    <section className="min-h-screen relative overflow-hidden flex flex-col justify-center bg-[#06060e]">
+    <section id="inicio" className="min-h-screen relative overflow-hidden flex flex-col justify-center bg-[#06060e]">
       {/* Vídeo / canvas de avenida */}
       <HighwayCanvas />
 
@@ -227,7 +230,7 @@ export function Hero() {
         <div className="flex items-center gap-4 mb-9">
           <div className="w-11 h-[1.5px] bg-gold-grad shrink-0" />
           <span className="font-inter text-xs font-bold tracking-widest uppercase text-gold">
-            Mídia exterior desde 1995
+            Mídia exterior e DOOH desde 1995
           </span>
         </div>
 
@@ -247,7 +250,8 @@ export function Hero() {
         {/* CTAs */}
         <div className="flex flex-wrap gap-4 mb-20">
           <a
-            href="#contato"
+            href={appLink}
+            {...EXTERNAL_LINK_PROPS}
             className="inline-flex items-center gap-2.5 bg-wine-grad text-[#F9F7F2] font-inter text-sm font-bold tracking-wider uppercase py-4.5 px-9.5 rounded-full shadow-[0_6px_32px_rgba(138,0,9,0.45)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_44px_rgba(138,0,9,0.62)]"
           >
             Anuncie agora <ArrowRight size={16} />
