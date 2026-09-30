@@ -20,8 +20,24 @@ describe('Testimonials (view) exibe author/role/content — schema real de `depo
     expect(screen.getByText('Cliente B')).toBeInTheDocument();
   });
 
-  it('não inventa empresa/foto para os depoimentos', () => {
+  it('sem avatar_url não renderiza <img> e mostra as iniciais', () => {
     const { container } = render(<TestimonialsView depoimentos={FIXTURE} />);
     expect(container.querySelector('img')).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('avatar-iniciais')[0]).toHaveTextContent('CA');
+  });
+
+  it('com avatar_url renderiza a foto', () => {
+    render(<TestimonialsView depoimentos={[{ ...FIXTURE[0], avatar_url: 'https://example.com/a.jpg' }]} />);
+    expect(screen.getByRole('img', { name: 'Cliente A' })).toHaveAttribute('src', 'https://example.com/a.jpg');
+  });
+
+  it('mostra "Cargo · Empresa" quando há company', () => {
+    render(<TestimonialsView depoimentos={[{ ...FIXTURE[0], company: 'Acme' }]} />);
+    expect(screen.getByText('Sócio-proprietário · Acme')).toBeInTheDocument();
+  });
+
+  it('mostra só a empresa quando não há cargo', () => {
+    render(<TestimonialsView depoimentos={[{ ...FIXTURE[1], company: 'Acme' }]} />);
+    expect(screen.getByText('Acme')).toBeInTheDocument();
   });
 });

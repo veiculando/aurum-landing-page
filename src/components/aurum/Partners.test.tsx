@@ -22,6 +22,12 @@ describe('Partners (view) exibe as marcas vindas do banco como imagens reais', (
     expect(screen.getAllByText('Unimed').length).toBeGreaterThan(0);
   });
 
+  it('mantém a ordem recebida (o banco já ordena por display_order)', () => {
+    render(<PartnersView marcas={FIXTURE} />);
+    const names = screen.getAllByRole('img').map(i => i.getAttribute('alt'));
+    expect(names.indexOf('Bradesco')).toBeLessThan(names.indexOf('Unimed'));
+  });
+
   it('não quebra quando a lista de marcas vem vazia (banco indisponível/sem linhas ativas)', () => {
     render(<PartnersView marcas={[]} />);
     expect(screen.getByText(/Mais de 5 mil campanhas de sucesso/i)).toBeInTheDocument();

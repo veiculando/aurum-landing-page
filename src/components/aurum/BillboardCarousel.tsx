@@ -7,6 +7,14 @@ import type { Banner } from '@/lib/cms';
 const METAL = 'linear-gradient(180deg,#4a4a4a 0%,#2e2e2e 40%,#1c1c1c 100%)';
 const POLE_BG  = 'linear-gradient(90deg,#6a6a6a 0%,#4a4a4a 25%,#888 50%,#4a4a4a 75%,#6a6a6a 100%)';
 
+// Defesa em profundidade: o destino vem do banco; so renderiza href para
+// https://, ancora (#) ou o hotsite interno /ofertas/. Qualquer outro esquema
+// (javascript:, data:, http:) vira slide sem link.
+export function safeHref(destino: string | null): string | undefined {
+  if (!destino) return undefined;
+  return /^(https:\/\/|#|\/ofertas\/)/.test(destino) ? destino : undefined;
+}
+
 export function BillboardCarousel({ slides }: { slides: Banner[] }) {
   const [current, setCurrent] = useState(0);
   const [paused,  setPaused]  = useState(false);
@@ -70,7 +78,7 @@ export function BillboardCarousel({ slides }: { slides: Banner[] }) {
 
             {/* Face do outdoor — imagem do banner (tabela `banners`), com link de destino */}
             <a
-              href={slide.destino || undefined}
+              href={safeHref(slide.destino)}
               className="relative block rounded-md overflow-hidden min-h-[280px] md:min-h-[240px]"
               aria-label="Ver oferta"
             >

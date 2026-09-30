@@ -4,7 +4,15 @@ import { DEFAULT_CONTACT_LINK, DEFAULT_APP_LINK } from './site-links';
 export type SiteLinks = { contactLink: string; appLink: string };
 export type Marca = { id: string; name: string; image_url: string; display_order: number };
 export type Banner = { id: string; image_url: string; destino: string | null };
-export type Depoimento = { id: string; author: string; role: string | null; content: string };
+export type Depoimento = {
+  id: string;
+  author: string;
+  role: string | null;
+  content: string;
+  avatar_url?: string | null;
+  company?: string | null;
+  display_order?: number;
+};
 
 const FALLBACK_SITE_LINKS: SiteLinks = { contactLink: DEFAULT_CONTACT_LINK, appLink: DEFAULT_APP_LINK };
 
@@ -45,11 +53,18 @@ export async function getBanners(): Promise<Banner[]> {
   try {
     const { data, error } = await supabase
       .from('banners')
-      .select('id, image_url, destino')
+      .select('id, title, image_url, destino, tipo_destino, display_order')
       .eq('is_active', true)
-      .order('created_at', { ascending: true });
+      .order('display_order', { ascending: true })
+      .order('created_at', { ascending: true })
+      .order('id', { ascending: true });
     if (error) return [];
-    return data ?? [];
+    // Banner de hotsite HTML (ADR-CMS-003) abre a rota /ofertas/{id} da LP.
+    return (data ?? []).map(({ id, image_url, destino, tipo_destino }) => ({
+      id,
+      image_url,
+      destino: tipo_destino === 'html' ? `/ofertas/${id}` : destino,
+    }));
   } catch {
     return [];
   }
@@ -60,9 +75,11 @@ export async function getDepoimentos(): Promise<Depoimento[]> {
   try {
     const { data, error } = await supabase
       .from('depoimentos')
-      .select('id, author, role, content')
+      .select('id, author, role, content, avatar_url, company, display_order')
       .eq('is_active', true)
-      .order('created_at', { ascending: true });
+      .order('display_order', { ascending: true })
+      .order('created_at', { ascending: true })
+      .order('id', { ascending: true });
     if (error) return [];
     return data ?? [];
   } catch {
