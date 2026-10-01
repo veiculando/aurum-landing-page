@@ -27,6 +27,19 @@ describe('BillboardCarousel exibe banners reais (imagem + destino), schema de `b
     expect(screen.getByLabelText('Ver oferta')).not.toHaveAttribute('href', 'https://aurumooh.com.br/oferta1');
   });
 
+  it('mantém o link do hotsite interno /ofertas/{id}', () => {
+    render(<BillboardCarousel slides={[{ id: '3', image_url: 'https://example.com/b.jpg', destino: '/ofertas/3' }]} />);
+    expect(screen.getByLabelText('Ver oferta')).toHaveAttribute('href', '/ofertas/3');
+  });
+
+  it.each(['javascript:alert(1)', 'data:text/html,x', 'http://insegura.com', '//evil.com', '/outra-rota'])(
+    'não renderiza href para destino inseguro (%s)',
+    destino => {
+      render(<BillboardCarousel slides={[{ id: '4', image_url: 'https://example.com/b.jpg', destino }]} />);
+      expect(screen.getByLabelText('Ver oferta')).not.toHaveAttribute('href');
+    },
+  );
+
   it('não renderiza nada (nem quebra) quando não há banners ativos', () => {
     const { container } = render(<BillboardCarousel slides={[]} />);
     expect(container).toBeEmptyDOMElement();

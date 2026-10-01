@@ -12,6 +12,10 @@ function Stars() {
   );
 }
 
+function initials(name: string) {
+  return name.trim().split(/\s+/).slice(0, 2).map(p => p[0]?.toUpperCase() ?? '').join('');
+}
+
 export function TestimonialsView({ depoimentos }: { depoimentos: Depoimento[] }) {
   return (
     <section id="depoimentos" className="bg-[#F9F7F2] py-24 md:py-32">
@@ -30,7 +34,7 @@ export function TestimonialsView({ depoimentos }: { depoimentos: Depoimento[] })
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
-          {depoimentos.map(({ id, author, role, content }) => (
+          {depoimentos.map(({ id, author, role, content, avatar_url, company }) => (
             <div
               key={id}
               className="bg-paper rounded-aurum p-11 border border-wine/7 shadow-aurum relative overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-aurum-hv"
@@ -50,11 +54,27 @@ export function TestimonialsView({ depoimentos }: { depoimentos: Depoimento[] })
               </blockquote>
 
               {/* Person */}
+              <div className="flex items-center gap-3">
+                {avatar_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={avatar_url} alt={author} className="w-11 h-11 rounded-full object-cover" />
+                ) : (
+                  <div
+                    aria-hidden="true"
+                    data-testid="avatar-iniciais"
+                    className="w-11 h-11 rounded-full bg-wine/10 text-wine font-inter font-bold text-sm flex items-center justify-center"
+                  >
+                    {initials(author)}
+                  </div>
+                )}
               <div>
                 <div className="font-inter font-bold text-sm sm:text-base text-charcoal leading-tight">{author}</div>
-                {role && (
-                  <div className="font-inter text-xs sm:text-sm text-on-surface leading-tight mt-0.5">{role}</div>
+                {(role || company) && (
+                  <div className="font-inter text-xs sm:text-sm text-on-surface leading-tight mt-0.5">
+                    {[role, company].filter(Boolean).join(' · ')}
+                  </div>
                 )}
+              </div>
               </div>
             </div>
           ))}
@@ -65,8 +85,7 @@ export function TestimonialsView({ depoimentos }: { depoimentos: Depoimento[] })
 }
 
 // Server Component: busca depoimentos ativos no Supabase (tabela
-// `depoimentos`). O schema real só tem author/role/content — sem
-// empresa nem foto, então essa versão não inventa esses campos.
+// `depoimentos`), com foto (avatar_url) e empresa (company) opcionais.
 export async function Testimonials() {
   const depoimentos = await getDepoimentos();
   return <TestimonialsView depoimentos={depoimentos} />;
