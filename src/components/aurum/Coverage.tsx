@@ -67,7 +67,7 @@ function MapSVG() {
       <div className="absolute inset-0 bg-[radial-gradient(#e5e5e0_1px,transparent_1px)] [background-size:16px_16px] opacity-60" />
       
       {/* SVG Canvas Map */}
-      <svg className="w-full h-full max-w-[500px] max-h-[340px] z-10 p-4" viewBox="0 0 500 340" fill="none">
+      <svg className="w-full h-full max-w-[500px] max-h-[340px] z-10 p-4 mb-16" viewBox="0 35 500 340" fill="none">
         {/* Road networks */}
         {/* Rodovia Presidente Dutra (Vale do Paraíba corridor) */}
         <path

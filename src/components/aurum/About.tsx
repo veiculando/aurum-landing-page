@@ -32,9 +32,9 @@ const VALUES = [
 ];
 
 const TEAM = [
-  { name: 'Carlos Mendes',  role: 'CEO & Fundador',     photo: 'https://images.unsplash.com/photo-1600878459138-e1123b37cb30?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200' },
-  { name: 'Ana Beatriz',    role: 'Diretora Comercial', photo: 'https://images.unsplash.com/photo-1573497019236-17f8177b81e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200' },
-  { name: 'Lucas Ferreira', role: 'Head de Operações',  photo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=200' },
+  { name: 'Cristiane Godoy', role: 'Diretora Administrativa', photo: '/equipe/cristiane-godoy.jpg' },
+  { name: 'Erica Gondim',    role: 'Gerente Comercial',       photo: '/equipe/erica-gondim.jpg' },
+  { name: 'Victor Godoy',    role: 'Head Operacional',        photo: '/equipe/victor-godoy.jpg' },
 ];
 
 const STATS = [
